@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ImpersonateController extends Controller
 {
 
 
 
-    public function __construct(){
+    public function __construct()
+    {
 
-        $this->middleware(['auth','can:admin']);
+        $this->middleware(['auth', 'can:admin']);
     }
     /**
      * Display a listing of the resource.
@@ -20,7 +23,7 @@ class ImpersonateController extends Controller
      */
     public function index()
     {
-return view("impersonate");
+        return view("impersonate");
     }
 
     /**
@@ -28,9 +31,20 @@ return view("impersonate");
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function impersonate(Request $request)
     {
-        //
+        $request->validate([
+            'email' => "required|email|exists:users,email"
+
+
+        ]);
+
+
+        $user = User::where('email', $request->email)->first();
+        info($user);
+        session()->put('impersonate_by', Auth::user()->id);
+        Auth::login($user);
+        return redirect('/dashboard');
     }
 
     /**

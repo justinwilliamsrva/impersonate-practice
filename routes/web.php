@@ -24,5 +24,11 @@ Route::get('/dashboard', function () {
 
 
 Route::get('/admin/impersonate', [ImpersonateController::class,'index'])->name('impersonate');
+Route::post('/admin/impersonate', [ImpersonateController::class,'impersonate'])->name('impersonatePost');
+
 
 require __DIR__.'/auth.php';
+
+
+//alfred13@example.net
+// jevon.kuhic@example.org
