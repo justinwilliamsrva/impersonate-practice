@@ -25,6 +25,8 @@ Route::get('/dashboard', function () {
 
 Route::get('/admin/impersonate', [ImpersonateController::class,'index'])->name('impersonate');
 Route::post('/admin/impersonate', [ImpersonateController::class,'impersonate'])->name('impersonatePost');
+Route::delete('/admin/impersonate', [ImpersonateController::class,'delete'])->name('impersonateDelete');
+
 
 
 require __DIR__.'/auth.php';

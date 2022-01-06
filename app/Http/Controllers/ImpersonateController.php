@@ -14,7 +14,7 @@ class ImpersonateController extends Controller
     public function __construct()
     {
 
-        $this->middleware(['auth', 'can:admin']);
+        $this->middleware(['auth', 'can:admin'])->except("delete");
     }
     /**
      * Display a listing of the resource.
@@ -35,11 +35,7 @@ class ImpersonateController extends Controller
     {
         $request->validate([
             'email' => "required|email|exists:users,email"
-
-
         ]);
-
-
         $user = User::where('email', $request->email)->first();
         info($user);
         session()->put('impersonate_by', Auth::user()->id);
@@ -53,9 +49,12 @@ class ImpersonateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function delete()
     {
-        //
+        Auth::loginUsingId(session('impersonate_by'));
+        session()->forget('impersonate_by');
+        return redirect('/dashboard');
+
     }
 
     /**

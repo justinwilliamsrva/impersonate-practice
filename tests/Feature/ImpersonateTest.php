@@ -44,6 +44,16 @@ class ImpersonateTest extends TestCase
         $this->actingAs($admin);
         $this->post('/admin/impersonate', ['email' => $user->email]);
         $this->assertEquals(Auth::user()->id, $user->id);
-        
+
+    }
+    public function test_admin_can_stop_impersonate()
+    {
+
+        $admin = User::factory()->create(['roles' => 'admin']);
+        $user = User::factory()->create();
+        $this->actingAs($admin);
+        $this->delete('/admin/impersonate', ['email' => $user->email]);
+        $this->assertEquals(Auth::user()->id, $admin->id);
+
     }
 }
